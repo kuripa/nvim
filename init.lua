@@ -14,6 +14,8 @@ require('modules.dashboard')
 require('modules.kommentary')
 require('modules.whichkey')
 require('modules.neogit')
+require('modules.gitsigns')
+
 -- Lsp
 require('lsp.lsp-config')
 require('lsp.clangd-ls')

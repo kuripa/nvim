@@ -59,8 +59,14 @@ return require('packer').startup(function()
 
     -- neogit
     use {
-        'TimUntersberger/neogit', 
-        requires = 'nvim-lua/plenary.nvim' 
+        'TimUntersberger/neogit',
+        requires = 'nvim-lua/plenary.nvim'
+    }
+
+    -- gitsigns
+    use {
+        'lewis6991/gitsigns.nvim',
+        requires = { 'nvim-lua/plenary.nvim' }
     }
 
 end)
