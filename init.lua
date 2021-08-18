@@ -15,6 +15,7 @@ require('modules.kommentary')
 require('modules.whichkey')
 require('modules.neogit')
 require('modules.gitsigns')
+require('modules.diffview')
 
 -- Lsp
 require('lsp.lsp-config')

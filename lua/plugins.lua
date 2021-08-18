@@ -69,5 +69,8 @@ return require('packer').startup(function()
         requires = { 'nvim-lua/plenary.nvim' }
     }
 
+    -- diffview
+    use 'sindrets/diffview.nvim'
+
 end)
 
