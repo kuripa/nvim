@@ -57,5 +57,11 @@ return require('packer').startup(function()
     'folke/which-key.nvim'
     }
 
+    -- neogit
+    use {
+        'TimUntersberger/neogit', 
+        requires = 'nvim-lua/plenary.nvim' 
+    }
+
 end)
 
