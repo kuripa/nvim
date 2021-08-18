@@ -3,12 +3,16 @@ return require('packer').startup(function()
     -- packer
     use 'wbthomason/packer.nvim'
 
-    -- gruvbox
-    use 'sainnhe/gruvbox-material' -- with treesitter support
-    -- use 'morhetz/gruvbox'
+    -- plenary
+    use 'nvim-lua/plenary.nvim'
 
-    -- autocompletion
+    -- gruvbox
+    use 'sainnhe/gruvbox-material'
+
+    -- lsp-config
     use 'neovim/nvim-lspconfig'
+
+    -- compe
     use 'hrsh7th/nvim-compe'
 
     -- treesitter
@@ -20,7 +24,7 @@ return require('packer').startup(function()
     -- telescope
     use {
         'nvim-telescope/telescope.nvim',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = 'nvim-lua/plenary.nvim'
     }
 
     -- nvimtree
@@ -43,19 +47,13 @@ return require('packer').startup(function()
         requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
     -- dashboard
-    use {
-        'glepnir/dashboard-nvim'
-    }
+    use 'glepnir/dashboard-nvim'
 
     -- kommentary
-    use {
-        'b3nj5m1n/kommentary'
-    }
+    use 'b3nj5m1n/kommentary'
 
     -- which key
-    use {
-    'folke/which-key.nvim'
-    }
+    use 'folke/which-key.nvim'
 
     -- neogit
     use {
@@ -66,7 +64,7 @@ return require('packer').startup(function()
     -- gitsigns
     use {
         'lewis6991/gitsigns.nvim',
-        requires = { 'nvim-lua/plenary.nvim' }
+        requires = 'nvim-lua/plenary.nvim'
     }
 
     -- diffview
