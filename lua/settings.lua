@@ -1,13 +1,19 @@
 -- General
 vim.g.mapleader = ' '             -- Map leader key
 vim.wo.wrap = false               -- Display long lines as just one line
-vim.opt.ruler = false             -- Show the cursor position all the time
+vim.opt.ruler = true              -- Show the cursor position all the time
 vim.o.showmode = true             -- We don't need to see things like -- INSERT -- anymore
 vim.opt.hidden = true             -- Required to keep multiple buffers open multiple buffers
 vim.opt.termguicolors = true      -- Set 24bit colors
 vim.opt.mouse = 'a'               -- Enable mouse
 vim.opt.clipboard = 'unnamedplus' -- Copy paste between vim and everything else
+vim.opt.scrolloff = 8
+vim.opt.updatetime = 50
+vim.opt.colorcolumn = "80"
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
 
+vim.opt.guicursor = ""
 -- Tabs
 
 vim.opt.tabstop = 4
@@ -34,10 +40,6 @@ vim.opt.cmdheight = 2       -- More space for displaying messages
 
 -- Default Plugins
 local disabled_built_ins = {
-    "netrw",
-    "netrwPlugin",
-    "netrwSettings",
-    "netrwFileHandlers",
     "gzip",
     "zip",
     "zipPlugin",
