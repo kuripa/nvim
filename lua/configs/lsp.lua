@@ -2,12 +2,6 @@ local lsp = require("lsp-zero")
 
 lsp.preset("recommended")
 
-lsp.ensure_installed({
-    "lua_ls",
-    "clangd",
-    "dockerls",
-    "pyright",
-})
 
 -- Fix Undefined global 'vim'
 lsp.configure("lua_ls", {
@@ -26,7 +20,7 @@ local cmp_action = require("lsp-zero").cmp_action()
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
-lsp.setup_nvim_cmp({
+lsp.setup({
     sources = {
 		{ name = "nvim_lsp" }, -- LSP
 		{ name = "nvim_lsp_signature_help" }, -- LSP for parameters in functions
@@ -99,6 +93,15 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 lsp.setup()
+
+
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  ensure_installed = {},
+  handlers = {
+    lsp.default_setup,
+  },
+})
 
 vim.diagnostic.config({
     virtual_text = true,

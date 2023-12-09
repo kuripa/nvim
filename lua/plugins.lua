@@ -2,7 +2,7 @@ return {
 
     {
         "VonHeikemen/lsp-zero.nvim",
-        version = "v1.x",
+        version = "v3.x",
         dependencies = {
             -- LSP Support
             "neovim/nvim-lspconfig",
@@ -27,16 +27,6 @@ return {
         end,
     },
 
---    {
---        "jose-elias-alvarez/null-ls.nvim",
---        dependencies = {
---            "nvim-lua/plenary.nvim",
---        },
---        config = function()
---            require("configs.null-ls")
---        end,
---    },
-
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -58,7 +48,6 @@ return {
 
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.1",
         lazy = false,
         dependencies = {
             "nvim-lua/plenary.nvim",
