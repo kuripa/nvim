@@ -42,19 +42,26 @@ return
                 },
             })
             require("telescope").load_extension("undo")
-
+            require("telescope").load_extension "file_browser"
 
             --require("telescope").load_extension("fzf")
-
+            vim.keymap.set("n", "<space>.", function()
+                require("telescope").extensions.file_browser.file_browser()
+            end)
             local builtin = require("telescope.builtin")
             vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
-            vim.keymap.set("n", "<leader>jf", builtin.git_files, {})
+            vim.keymap.set("n", "<leader>fj", builtin.git_files, {})
             vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-            vim.keymap.set("n", "<leader>b", builtin.buffers, {})
+            vim.keymap.set("n", "<leader>,", builtin.buffers, {})
             vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
             --vim.keymap.set("n", "<leader>fm", builtin.man_pages(), {})
-            vim.keymap.set("n", "<leader>fm", function() builtin.man_pages({ sections = { "1","2","3" } }) end, {})
+            vim.keymap.set("n", "<leader>fm", function() builtin.man_pages({ sections = { "1", "2", "3" } }) end, {})
             vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
         end,
+    },
+    {
+        "nvim-telescope/telescope-file-browser.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     }
+
 }

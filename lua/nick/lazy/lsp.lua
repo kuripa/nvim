@@ -84,15 +84,20 @@ return
                 end,
             },
         })
+local symbols = { Error = "󰅙", Info = "󰋼", Hint = "󰌵", Warn = "" }
 
+for name, icon in pairs(symbols) do
+	local hl = "DiagnosticSign" .. name
+	vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+end
 
         lsp.set_preferences({
             suggest_lsp_servers = false,
             sign_icons = {
-                error = "E",
-                warn = "W",
-                hint = "H",
-                info = "I",
+                error = "󰅙",
+                warn = "󰋼",
+                hint = "󰌵",
+                info = "",
             },
         })
 

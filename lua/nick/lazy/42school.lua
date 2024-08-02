@@ -1,5 +1,6 @@
 return {
 
+    {"cacharle/c_formatter_42.vim"},
 {
   "Diogo-ss/42-header.nvim",
   cmd = { "Stdheader" },
