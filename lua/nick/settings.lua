@@ -9,7 +9,7 @@ vim.opt.mouse = 'a'               -- Enable mouse
 vim.opt.clipboard = 'unnamedplus' -- Copy paste between vim and everything else
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 50
-vim.opt.colorcolumn = "80"
+--vim.opt.colorcolumn = "80"
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
