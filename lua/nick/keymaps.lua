@@ -25,3 +25,14 @@ vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
+vim.keymap.set("n", '<leader>cf',
+    function()
+        require('telescope.builtin').find_files({
+            prompt_title = "NeoVim Configuration",
+            cwd = vim.fn.stdpath("config"),
+        })
+    end)
+
+vim.keymap.set('n', '<leader>r', ':%s/')
+vim.keymap.set('x', '<leader>r', ':s/')
+vim.api.nvim_set_keymap('n', '<C-,>', '<C-w>w', { noremap = true, silent = true })
