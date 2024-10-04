@@ -14,8 +14,9 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
 vim.opt.guicursor = ""
--- Tabs
+vim.o.guifont = "Liberation Mono:h12" 
 
+-- Tabs
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
@@ -33,7 +34,7 @@ vim.opt.rnu = true          -- Relative line numbers
 vim.opt.splitbelow = true   -- Horizontal splits will automatically be below
 vim.opt.splitright = true   -- Vertical splits will automatically be to the right
 vim.opt.cursorline = true   -- Enable highlighting of the current line
-vim.opt.laststatus = 3      -- Always display the status line
+vim.opt.laststatus = 2      -- Always display the status line
 vim.opt.background = 'dark' -- tell vim what the background color looks like
 vim.opt.pumheight = 10      -- Makes popup menu smaller
 vim.opt.cmdheight = 2       -- More space for displaying messages
