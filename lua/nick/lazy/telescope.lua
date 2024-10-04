@@ -19,6 +19,48 @@ return
         },
         config = function()
             require("telescope").setup({
+                defaults = {
+                    layout_strategy = 'horizontal',
+                    layout_config = {
+                        preview_cutoff = 40,
+                        height = 0.9,
+                        prompt_position = 'top',
+                    },
+                    sorting_strategy = 'ascending',
+                    prompt_prefix = ' ',
+                    selection_caret = ' ',
+                    entry_prefix = '  ',
+                    multi_icon = '<>',
+                    winblend = 0,
+                    border = {},
+                    borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+                    color_devicons = true,
+                    use_less = true,
+                    path_display = { 'truncate' },
+                    set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
+                    file_ignore_patterns = { "node_modules" },
+                    mappings = {
+                        n = {
+                            ['o'] = require('telescope.actions.layout').toggle_preview,
+                            ['<C-c>'] = require('telescope.actions').close,
+                        },
+                        i = {
+                            ['<C-o>'] = require('telescope.actions.layout').toggle_preview,
+                        },
+                    },
+                },
+                pickers = {
+                    find_files = {
+                        theme = "ivy",
+                        previewer = false,
+                        layout_config = {
+                            height = 0.3, -- Set the height of the Ivy theme to 0.3
+                        },
+                        find_command = {
+                            'fd', '--type', 'f', '-H', '--strip-cwd-prefix',
+                        },
+                    }
+                },
                 extensions = {
                     undo = {
                         use_delta = true,
@@ -42,14 +84,16 @@ return
                 },
             })
             require("telescope").load_extension("undo")
-            require("telescope").load_extension "file_browser"
-
+            require("telescope").load_extension("file_browser")
             --require("telescope").load_extension("fzf")
+
             vim.keymap.set("n", "<space>.", function()
                 require("telescope").extensions.file_browser.file_browser()
             end)
+
             local builtin = require("telescope.builtin")
-            vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
+
+            vim.keymap.set("n", "<leader>.", builtin.find_files, {})
             vim.keymap.set("n", "<leader>fj", builtin.git_files, {})
             vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
             vim.keymap.set("n", "<leader>,", builtin.buffers, {})
