@@ -1,7 +1,7 @@
 return
 {
     "VonHeikemen/lsp-zero.nvim",
-    version = "*",
+    branch = 'v4.x',
     dependencies = {
         -- LSP Support
         "neovim/nvim-lspconfig",
@@ -24,18 +24,6 @@ return
     config = function()
         local lsp = require("lsp-zero")
 
-        lsp.preset("recommended")
-
-        -- Fix Undefined global 'vim'
-        lsp.configure("lua_ls", {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = { "vim" },
-                    },
-                },
-            },
-        })
 
         local cmp = require("cmp")
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -54,13 +42,13 @@ return
 
         cmp.setup({
             sources = {
-                { name = "nvim_lsp" },  -- LSP
+                { name = "nvim_lsp" },                -- LSP
                 { name = "nvim_lsp_signature_help" }, -- LSP for parameters in functions
-                { name = "nvim_lua" },  -- Lua Neovim API
-                { name = "luasnip" },   -- Luasnip
-                { name = "buffer" },    -- Buffers
-                { name = "path" },      -- Paths
-                { name = "emoji" },     -- Emoji
+                { name = "nvim_lua" },                -- Lua Neovim API
+                { name = "luasnip" },                 -- Luasnip
+                { name = "buffer" },                  -- Buffers
+                { name = "path" },                    -- Paths
+                { name = "emoji" },                   -- Emoji
             },
 
             mapping = {
@@ -84,25 +72,15 @@ return
                 end,
             },
         })
-local symbols = { Error = "󰅙", Info = "󰋼", Hint = "󰌵", Warn = "" }
+        local symbols = { Error = "󰅙", Info = "󰋼", Hint = "󰌵", Warn = "" }
 
-for name, icon in pairs(symbols) do
-	local hl = "DiagnosticSign" .. name
-	vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
-end
+        for name, icon in pairs(symbols) do
+            local hl = "DiagnosticSign" .. name
+            vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+        end
 
-        lsp.set_preferences({
-            suggest_lsp_servers = false,
-            sign_icons = {
-                error = "󰅙",
-                warn = "󰋼",
-                hint = "󰌵",
-                info = "",
-            },
-        })
-
-        lsp.on_attach(function(client, bufnr)
-            local opts = { buffer = bufnr, remap = false }
+        local lsp_attach = function(client, bufnr)
+            local opts = { buffer = bufnr }
 
             vim.keymap.set("n", "gd", function()
                 vim.lsp.buf.definition()
@@ -134,10 +112,24 @@ end
             vim.keymap.set("i", "<C-h>", function()
                 vim.lsp.buf.signature_help()
             end, opts)
-        end)
+        end
 
-        lsp.setup()
+        lsp.extend_lspconfig({
+            sign_text = true,
+            lsp_attach = lsp_attach,
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+        })
 
+        -- Fix Undefined global 'vim'
+        lsp.configure("lua_ls", {
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { "vim" },
+                    },
+                },
+            },
+        })
 
         require('mason').setup({})
         require('mason-lspconfig').setup({
