@@ -35,7 +35,6 @@ vim.opt.splitbelow = true   -- Horizontal splits will automatically be below
 vim.opt.splitright = true   -- Vertical splits will automatically be to the right
 vim.opt.cursorline = true   -- Enable highlighting of the current line
 vim.opt.laststatus = 2      -- Always display the status line
-vim.opt.background = 'dark' -- tell vim what the background color looks like
 vim.opt.pumheight = 10      -- Makes popup menu smaller
 vim.opt.cmdheight = 2       -- More space for displaying messages
 
@@ -60,3 +59,9 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
     vim.g["loaded_" .. plugin] = 1
 end
+vim.cmd [[
+  highlight Normal guibg=none
+  highlight NonText guibg=none
+  highlight Normal ctermbg=none
+  highlight NonText ctermbg=none
+]]
