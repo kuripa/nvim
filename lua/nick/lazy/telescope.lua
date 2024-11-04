@@ -38,7 +38,8 @@ return
                     use_less = true,
                     path_display = { 'truncate' },
                     set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
-                    file_ignore_patterns = { "node_modules" },
+                    file_ignore_patterns = { ".git/", ".cache", "%.o", "%.a", "%.out", "%.class",
+                        "%.pdf", "%.mkv", "%.mp4", "%.zip" },
                     mappings = {
                         n = {
                             ['o'] = require('telescope.actions.layout').toggle_preview,
@@ -51,14 +52,13 @@ return
                 },
                 pickers = {
                     find_files = {
-                        theme = "ivy",
-                        previewer = false,
+                        previewer = true,
                         layout_config = {
-                            height = 0.3, -- Set the height of the Ivy theme to 0.3
+                            height = 0.8,
                         },
-                        find_command = {
-                            'fd', '--type', 'f', '-H', '--strip-cwd-prefix',
-                        },
+                        -- find_command = {
+                        --     'fd', '--type', 'f', '-H', '--strip-cwd-prefix',
+                        -- },
                     }
                 },
                 extensions = {
