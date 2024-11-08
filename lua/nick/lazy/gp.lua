@@ -14,117 +14,97 @@ return {
                         endpoint = "https://api.anthropic.com/v1/messages",
                         secret = os.getenv("ANTHROPIC_API_KEY"),
                     },
+                    copilot = {
+                        endpoint = "https://api.githubcopilot.com/chat/completions",
+                        secret = {
+                            "bash",
+                            "-c",
+                            "cat ~/.config/github-copilot/apps.json | sed -e 's/.*oauth_token...//;s/\".*//'",
+                        },
+                    },
                 },
             }
             require("gp").setup(conf)
-            require("which-key").add({
-                -- VISUAL mode mappings
-                -- s, x, v modes are handled the same way by which_key
-                {
-                    mode = { "v" },
+            local function keymapOptions(desc)
+                return {
+                    noremap = true,
+                    silent = true,
                     nowait = true,
-                    remap = false,
-                    { "<leader>gt",  ":<C-u>'<,'>GpChatNew tabnew<cr>", desc = "ChatNew tabnew" },
-                    { "<leader>gv",  ":<C-u>'<,'>GpChatNew vsplit<cr>", desc = "ChatNew vsplit" },
-                    { "<leader>gx",  ":<C-u>'<,'>GpChatNew split<cr>",  desc = "ChatNew split" },
-                    { "<leader>ga",  ":<C-u>'<,'>GpAppend<cr>",         desc = "Visual Append (after)" },
-                    { "<leader>gb",  ":<C-u>'<,'>GpPrepend<cr>",        desc = "Visual Prepend (before)" },
-                    { "<leader>gc",  ":<C-u>'<,'>GpChatNew<cr>",        desc = "Visual Chat New" },
-                    { "<leader>gg",  group = "generate into new .." },
-                    { "<leader>gge", ":<C-u>'<,'>GpEnew<cr>",           desc = "Visual GpEnew" },
-                    { "<leader>ggn", ":<C-u>'<,'>GpNew<cr>",            desc = "Visual GpNew" },
-                    { "<leader>ggp", ":<C-u>'<,'>GpPopup<cr>",          desc = "Visual Popup" },
-                    { "<leader>ggt", ":<C-u>'<,'>GpTabnew<cr>",         desc = "Visual GpTabnew" },
-                    { "<leader>ggv", ":<C-u>'<,'>GpVnew<cr>",           desc = "Visual GpVnew" },
-                    { "<leader>gi",  ":<C-u>'<,'>GpImplement<cr>",      desc = "Implement selection" },
-                    { "<leader>gn",  "<cmd>GpNextAgent<cr>",            desc = "Next Agent" },
-                    { "<leader>gp",  ":<C-u>'<,'>GpChatPaste<cr>",      desc = "Visual Chat Paste" },
-                    { "<leader>gr",  ":<C-u>'<,'>GpRewrite<cr>",        desc = "Visual Rewrite" },
-                    { "<leader>gs",  "<cmd>GpStop<cr>",                 desc = "GpStop" },
-                    { "<leader>gt",  ":<C-u>'<,'>GpChatToggle<cr>",     desc = "Visual Toggle Chat" },
-                    { "<leader>gw",  group = "Whisper" },
-                    { "<leader>gwa", ":<C-u>'<,'>GpWhisperAppend<cr>",  desc = "Whisper Append" },
-                    { "<leader>gwb", ":<C-u>'<,'>GpWhisperPrepend<cr>", desc = "Whisper Prepend" },
-                    { "<leader>gwe", ":<C-u>'<,'>GpWhisperEnew<cr>",    desc = "Whisper Enew" },
-                    { "<leader>gwn", ":<C-u>'<,'>GpWhisperNew<cr>",     desc = "Whisper New" },
-                    { "<leader>gwp", ":<C-u>'<,'>GpWhisperPopup<cr>",   desc = "Whisper Popup" },
-                    { "<leader>gwr", ":<C-u>'<,'>GpWhisperRewrite<cr>", desc = "Whisper Rewrite" },
-                    { "<leader>gwt", ":<C-u>'<,'>GpWhisperTabnew<cr>",  desc = "Whisper Tabnew" },
-                    { "<leader>gwv", ":<C-u>'<,'>GpWhisperVnew<cr>",    desc = "Whisper Vnew" },
-                    { "<leader>gww", ":<C-u>'<,'>GpWhisper<cr>",        desc = "Whisper" },
-                    { "<leader>gx",  ":<C-u>'<,'>GpContext<cr>",        desc = "Visual GpContext" },
-                },
+                    desc = "GPT prompt " .. desc,
+                }
+            end
 
-                -- NORMAL mode mappings
-                {
-                    mode = { "n" },
-                    nowait = true,
-                    remap = false,
-                    { "<leader>gt", "<cmd>GpChatNew tabnew<cr>",   desc = "New Chat tabnew" },
-                    { "<leader>gv", "<cmd>GpChatNew vsplit<cr>",   desc = "New Chat vsplit" },
-                    { "<leader>gx", "<cmd>GpChatNew split<cr>",    desc = "New Chat split" },
-                    { "<leader>ga",     "<cmd>GpAppend<cr>",           desc = "Append (after)" },
-                    { "<leader>gb",     "<cmd>GpPrepend<cr>",          desc = "Prepend (before)" },
-                    { "<leader>gc",     "<cmd>GpChatNew<cr>",          desc = "New Chat" },
-                    { "<leader>gf",     "<cmd>GpChatFinder<cr>",       desc = "Chat Finder" },
-                    { "<leader>gg",     group = "generate into new .." },
-                    { "<leader>gge",    "<cmd>GpEnew<cr>",             desc = "GpEnew" },
-                    { "<leader>ggn",    "<cmd>GpNew<cr>",              desc = "GpNew" },
-                    { "<leader>ggp",    "<cmd>GpPopup<cr>",            desc = "Popup" },
-                    { "<leader>ggt",    "<cmd>GpTabnew<cr>",           desc = "GpTabnew" },
-                    { "<leader>ggv",    "<cmd>GpVnew<cr>",             desc = "GpVnew" },
-                    { "<leader>gn",     "<cmd>GpNextAgent<cr>",        desc = "Next Agent" },
-                    { "<leader>gr",     "<cmd>GpRewrite<cr>",          desc = "Inline Rewrite" },
-                    { "<leader>gs",     "<cmd>GpStop<cr>",             desc = "GpStop" },
-                    { "<leader>gt",     "<cmd>GpChatToggle<cr>",       desc = "Toggle Chat" },
-                    { "<leader>gw",     group = "Whisper" },
-                    { "<leader>gwa",    "<cmd>GpWhisperAppend<cr>",    desc = "Whisper Append (after)" },
-                    { "<leader>gwb",    "<cmd>GpWhisperPrepend<cr>",   desc = "Whisper Prepend (before)" },
-                    { "<leader>gwe",    "<cmd>GpWhisperEnew<cr>",      desc = "Whisper Enew" },
-                    { "<leader>gwn",    "<cmd>GpWhisperNew<cr>",       desc = "Whisper New" },
-                    { "<leader>gwp",    "<cmd>GpWhisperPopup<cr>",     desc = "Whisper Popup" },
-                    { "<leader>gwr",    "<cmd>GpWhisperRewrite<cr>",   desc = "Whisper Inline Rewrite" },
-                    { "<leader>gwt",    "<cmd>GpWhisperTabnew<cr>",    desc = "Whisper Tabnew" },
-                    { "<leader>gwv",    "<cmd>GpWhisperVnew<cr>",      desc = "Whisper Vnew" },
-                    { "<leader>gww",    "<cmd>GpWhisper<cr>",          desc = "Whisper" },
-                    { "<leader>gx",     "<cmd>GpContext<cr>",          desc = "Toggle GpContext" },
-                },
+            -- Chat commands
+            vim.keymap.set({ "n", "i" }, "<C-g>c", "<cmd>GpChatNew<cr>", keymapOptions("New Chat"))
+            vim.keymap.set({ "n", "i" }, "<C-g>t", "<cmd>GpChatToggle<cr>", keymapOptions("Toggle Chat"))
+            vim.keymap.set({ "n", "i" }, "<C-g>f", "<cmd>GpChatFinder<cr>", keymapOptions("Chat Finder"))
 
-                -- INSERT mode mappings
-                {
-                    mode = { "i" },
-                    nowait = true,
-                    remap = false,
-                    { "<leader>gt", "<cmd>GpChatNew tabnew<cr>",   desc = "New Chat tabnew" },
-                    { "<leader>gv", "<cmd>GpChatNew vsplit<cr>",   desc = "New Chat vsplit" },
-                    { "<leader>gx", "<cmd>GpChatNew split<cr>",    desc = "New Chat split" },
-                    { "<leader>ga",     "<cmd>GpAppend<cr>",           desc = "Append (after)" },
-                    { "<leader>gb",     "<cmd>GpPrepend<cr>",          desc = "Prepend (before)" },
-                    { "<leader>gc",     "<cmd>GpChatNew<cr>",          desc = "New Chat" },
-                    { "<leader>gf",     "<cmd>GpChatFinder<cr>",       desc = "Chat Finder" },
-                    { "<leader>gg",     group = "generate into new .." },
-                    { "<leader>gge",    "<cmd>GpEnew<cr>",             desc = "GpEnew" },
-                    { "<leader>ggn",    "<cmd>GpNew<cr>",              desc = "GpNew" },
-                    { "<leader>ggp",    "<cmd>GpPopup<cr>",            desc = "Popup" },
-                    { "<leader>ggt",    "<cmd>GpTabnew<cr>",           desc = "GpTabnew" },
-                    { "<leader>ggv",    "<cmd>GpVnew<cr>",             desc = "GpVnew" },
-                    { "<leader>gn",     "<cmd>GpNextAgent<cr>",        desc = "Next Agent" },
-                    { "<leader>gr",     "<cmd>GpRewrite<cr>",          desc = "Inline Rewrite" },
-                    { "<leader>gs",     "<cmd>GpStop<cr>",             desc = "GpStop" },
-                    { "<leader>gt",     "<cmd>GpChatToggle<cr>",       desc = "Toggle Chat" },
-                    { "<leader>gw",     group = "Whisper" },
-                    { "<leader>gwa",    "<cmd>GpWhisperAppend<cr>",    desc = "Whisper Append (after)" },
-                    { "<leader>gwb",    "<cmd>GpWhisperPrepend<cr>",   desc = "Whisper Prepend (before)" },
-                    { "<leader>gwe",    "<cmd>GpWhisperEnew<cr>",      desc = "Whisper Enew" },
-                    { "<leader>gwn",    "<cmd>GpWhisperNew<cr>",       desc = "Whisper New" },
-                    { "<leader>gwp",    "<cmd>GpWhisperPopup<cr>",     desc = "Whisper Popup" },
-                    { "<leader>gwr",    "<cmd>GpWhisperRewrite<cr>",   desc = "Whisper Inline Rewrite" },
-                    { "<leader>gwt",    "<cmd>GpWhisperTabnew<cr>",    desc = "Whisper Tabnew" },
-                    { "<leader>gwv",    "<cmd>GpWhisperVnew<cr>",      desc = "Whisper Vnew" },
-                    { "<leader>gww",    "<cmd>GpWhisper<cr>",          desc = "Whisper" },
-                    { "<leader>gx",     "<cmd>GpContext<cr>",          desc = "Toggle GpContext" },
-                },
-            })
+            vim.keymap.set("v", "<C-g>c", ":<C-u>'<,'>GpChatNew<cr>", keymapOptions("Visual Chat New"))
+            vim.keymap.set("v", "<C-g>p", ":<C-u>'<,'>GpChatPaste<cr>", keymapOptions("Visual Chat Paste"))
+            vim.keymap.set("v", "<C-g>t", ":<C-u>'<,'>GpChatToggle<cr>", keymapOptions("Visual Toggle Chat"))
+
+            vim.keymap.set({ "n", "i" }, "<C-g><C-x>", "<cmd>GpChatNew split<cr>", keymapOptions("New Chat split"))
+            vim.keymap.set({ "n", "i" }, "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", keymapOptions("New Chat vsplit"))
+            vim.keymap.set({ "n", "i" }, "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", keymapOptions("New Chat tabnew"))
+
+            vim.keymap.set("v", "<C-g><C-x>", ":<C-u>'<,'>GpChatNew split<cr>", keymapOptions("Visual Chat New split"))
+            vim.keymap.set("v", "<C-g><C-v>", ":<C-u>'<,'>GpChatNew vsplit<cr>", keymapOptions("Visual Chat New vsplit"))
+            vim.keymap.set("v", "<C-g><C-t>", ":<C-u>'<,'>GpChatNew tabnew<cr>", keymapOptions("Visual Chat New tabnew"))
+
+            -- Prompt commands
+            vim.keymap.set({ "n", "i" }, "<C-g>r", "<cmd>GpRewrite<cr>", keymapOptions("Inline Rewrite"))
+            vim.keymap.set({ "n", "i" }, "<C-g>a", "<cmd>GpAppend<cr>", keymapOptions("Append (after)"))
+            vim.keymap.set({ "n", "i" }, "<C-g>b", "<cmd>GpPrepend<cr>", keymapOptions("Prepend (before)"))
+
+            vim.keymap.set("v", "<C-g>r", ":<C-u>'<,'>GpRewrite<cr>", keymapOptions("Visual Rewrite"))
+            vim.keymap.set("v", "<C-g>a", ":<C-u>'<,'>GpAppend<cr>", keymapOptions("Visual Append (after)"))
+            vim.keymap.set("v", "<C-g>b", ":<C-u>'<,'>GpPrepend<cr>", keymapOptions("Visual Prepend (before)"))
+            vim.keymap.set("v", "<C-g>i", ":<C-u>'<,'>GpImplement<cr>", keymapOptions("Implement selection"))
+
+            vim.keymap.set({ "n", "i" }, "<C-g>gp", "<cmd>GpPopup<cr>", keymapOptions("Popup"))
+            vim.keymap.set({ "n", "i" }, "<C-g>ge", "<cmd>GpEnew<cr>", keymapOptions("GpEnew"))
+            vim.keymap.set({ "n", "i" }, "<C-g>gn", "<cmd>GpNew<cr>", keymapOptions("GpNew"))
+            vim.keymap.set({ "n", "i" }, "<C-g>gv", "<cmd>GpVnew<cr>", keymapOptions("GpVnew"))
+            vim.keymap.set({ "n", "i" }, "<C-g>gt", "<cmd>GpTabnew<cr>", keymapOptions("GpTabnew"))
+
+            vim.keymap.set("v", "<C-g>gp", ":<C-u>'<,'>GpPopup<cr>", keymapOptions("Visual Popup"))
+            vim.keymap.set("v", "<C-g>ge", ":<C-u>'<,'>GpEnew<cr>", keymapOptions("Visual GpEnew"))
+            vim.keymap.set("v", "<C-g>gn", ":<C-u>'<,'>GpNew<cr>", keymapOptions("Visual GpNew"))
+            vim.keymap.set("v", "<C-g>gv", ":<C-u>'<,'>GpVnew<cr>", keymapOptions("Visual GpVnew"))
+            vim.keymap.set("v", "<C-g>gt", ":<C-u>'<,'>GpTabnew<cr>", keymapOptions("Visual GpTabnew"))
+
+            vim.keymap.set({ "n", "i" }, "<C-g>x", "<cmd>GpContext<cr>", keymapOptions("Toggle Context"))
+            vim.keymap.set("v", "<C-g>x", ":<C-u>'<,'>GpContext<cr>", keymapOptions("Visual Toggle Context"))
+
+            vim.keymap.set({ "n", "i", "v", "x" }, "<C-g>s", "<cmd>GpStop<cr>", keymapOptions("Stop"))
+            vim.keymap.set({ "n", "i", "v", "x" }, "<C-g>n", "<cmd>GpNextAgent<cr>", keymapOptions("Next Agent"))
+
+            -- optional Whisper commands with prefix <C-g>w
+            vim.keymap.set({ "n", "i" }, "<C-g>ww", "<cmd>GpWhisper<cr>", keymapOptions("Whisper"))
+            vim.keymap.set("v", "<C-g>ww", ":<C-u>'<,'>GpWhisper<cr>", keymapOptions("Visual Whisper"))
+
+            vim.keymap.set({ "n", "i" }, "<C-g>wr", "<cmd>GpWhisperRewrite<cr>", keymapOptions("Whisper Inline Rewrite"))
+            vim.keymap.set({ "n", "i" }, "<C-g>wa", "<cmd>GpWhisperAppend<cr>", keymapOptions("Whisper Append (after)"))
+            vim.keymap.set({ "n", "i" }, "<C-g>wb", "<cmd>GpWhisperPrepend<cr>",
+                keymapOptions("Whisper Prepend (before) "))
+
+            vim.keymap.set("v", "<C-g>wr", ":<C-u>'<,'>GpWhisperRewrite<cr>", keymapOptions("Visual Whisper Rewrite"))
+            vim.keymap.set("v", "<C-g>wa", ":<C-u>'<,'>GpWhisperAppend<cr>",
+                keymapOptions("Visual Whisper Append (after)"))
+            vim.keymap.set("v", "<C-g>wb", ":<C-u>'<,'>GpWhisperPrepend<cr>",
+                keymapOptions("Visual Whisper Prepend (before)"))
+
+            vim.keymap.set({ "n", "i" }, "<C-g>wp", "<cmd>GpWhisperPopup<cr>", keymapOptions("Whisper Popup"))
+            vim.keymap.set({ "n", "i" }, "<C-g>we", "<cmd>GpWhisperEnew<cr>", keymapOptions("Whisper Enew"))
+            vim.keymap.set({ "n", "i" }, "<C-g>wn", "<cmd>GpWhisperNew<cr>", keymapOptions("Whisper New"))
+            vim.keymap.set({ "n", "i" }, "<C-g>wv", "<cmd>GpWhisperVnew<cr>", keymapOptions("Whisper Vnew"))
+            vim.keymap.set({ "n", "i" }, "<C-g>wt", "<cmd>GpWhisperTabnew<cr>", keymapOptions("Whisper Tabnew"))
+
+            vim.keymap.set("v", "<C-g>wp", ":<C-u>'<,'>GpWhisperPopup<cr>", keymapOptions("Visual Whisper Popup"))
+            vim.keymap.set("v", "<C-g>we", ":<C-u>'<,'>GpWhisperEnew<cr>", keymapOptions("Visual Whisper Enew"))
+            vim.keymap.set("v", "<C-g>wn", ":<C-u>'<,'>GpWhisperNew<cr>", keymapOptions("Visual Whisper New"))
+            vim.keymap.set("v", "<C-g>wv", ":<C-u>'<,'>GpWhisperVnew<cr>", keymapOptions("Visual Whisper Vnew"))
+            vim.keymap.set("v", "<C-g>wt", ":<C-u>'<,'>GpWhisperTabnew<cr>", keymapOptions("Visual Whisper Tabnew"))
         end,
     }
 }
