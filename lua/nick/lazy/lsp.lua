@@ -82,6 +82,9 @@ return
         local lsp_attach = function(client, bufnr)
             local opts = { buffer = bufnr }
 
+            vim.keymap.set("n", "<space>lf", function()
+                vim.lsp.buf.format()
+            end, opts)
             vim.keymap.set("n", "gd", function()
                 vim.lsp.buf.definition()
             end, opts)
@@ -106,9 +109,9 @@ return
             vim.keymap.set("n", "<leader>vrr", function()
                 vim.lsp.buf.references()
             end, opts)
-            vim.keymap.set("n", "<leader>vrn", function()
+            vim.keymap.set("n", "<leader>lr", function()
                 vim.lsp.buf.rename()
-            end, opts)
+            end, {buffer = bufnr, desc = "Rename"})
             vim.keymap.set("i", "<C-h>", function()
                 vim.lsp.buf.signature_help()
             end, opts)
